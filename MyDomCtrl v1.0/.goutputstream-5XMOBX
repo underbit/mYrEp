@@ -1,0 +1,37 @@
+/*
+	La classe rappresenta il genitore di tutti i moduli che possiamo
+	collegare ad arduino. Quindi un requisito essenziale è la presenza
+	di un oggetto arduino e del canale al quale è collegato. Inoltre
+	bisogna rappresentare le informazioni di posizione e identità tramite
+	la classe "base". 
+	La classe gestisce i log e l'abbinamento con arduino.
+*/
+
+#ifndef MODULO_H
+#define MODULO_H
+
+#include "base.h"
+#include "arduino.h"
+
+class modulo : public base {
+	public:
+		// La classe eredita la classe base delle informazioni.
+		modulo(int , string , string , arduino *, int, bool, bool);
+		// Il tipo può essere: m=base, s=sonda, v=valvola
+		virtual char tipo() const { return 'm'; };
+		// Il modo può essere 0 lettura, 1 scrittura 
+		virtual bool modo() const { return false; };
+		int getCanale() const { return _canale; };
+		// Imposta i log
+		void setVerbose(bool);
+		void setLogRisposte(bool);
+	protected:	
+		arduino *_arduino;
+		int _canale;
+		// Variabili necessarie al log
+		bool _verbose;
+		bool _logRisposte;
+		
+};
+
+#endif

@@ -1,0 +1,17 @@
+window_sizes 1230 776 300 924 538 164
+diagrams
+  active  classdiagram_ref 141186 // SorgentiCalore
+    924 538 100 4 0 0
+  classdiagram_ref 141314 // termoZona
+    924 538 100 4 12 0
+  classdiagram_ref 141058 // MyDomCtrl
+    739 430 100 4 0 0
+end
+show_stereotypes
+selected class_ref 142466 // sorgenteCalore
+open
+  class_ref 142466 // sorgenteCalore
+  class_ref 142722 // programma
+end
+end
+verbose

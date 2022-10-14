@@ -1,0 +1,22 @@
+#ifndef MODULOLETTURA_H
+#define MODULOLETTURA_H
+
+#include "modulo.h"
+
+class moduloLettura : public modulo {
+	public:
+		// La classe eredita la classe base delle informazioni.
+		modulo(int , string , string , arduino *, bool, bool);
+		// Il modo può essere 0 lettura
+		bool modo() const { return false; };
+		// Legge i dati da arduino
+		void LeggiDati();		
+		// buffer dei dati di risposta
+		string getUltimaLettura() const { return _dati; };
+
+	private:
+		// buffer dei dati di risposta
+		string _dati;
+};
+
+#endif

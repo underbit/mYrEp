@@ -1,0 +1,11 @@
+#include "attuatore.h"
+
+attuatore::attuatore(int id, string nome, string posizione, arduino &mya, int canale, bool v, bool r)
+	:base(id, nome, posizione, mya, canale, v, r) {
+	_stato = false;
+}
+
+void attuatore::SetAttuatore(bool val) {
+	*_arduino->InviaMessaggio(true, 'd', _canale, 1, _verbose);
+	_stato = true;
+}

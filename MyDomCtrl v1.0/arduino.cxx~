@@ -1,0 +1,166 @@
+
+#include "arduino.h"
+#include "base.h"
+#include <string>
+
+//Costanti necessarie ad ArdShell
+const int CICLI_TIME_OUT = 10;
+const char END_MSG[] = "$%%$";
+const char PORTA_DEFAULT[] = "/dev/ttyACM0";
+
+string arduino::IntToString(int i) {
+	string appo = "";
+	if(i == 0) appo = "0";
+	else {
+		while(i > 0) {
+			appo = (char) ((i % 10) + 48) + appo;
+			i = i / 10;
+		}
+	}
+	return appo;
+}
+
+arduino::arduino(int id, string nome, string posizione, bool verb)
+	:base(id, nome, posizione){
+		_verbose = verb;
+		ImpostaPortaSeriale();
+}
+
+arduino::arduino(int id, string nome, string posizione, string fileseriale, bool verb)
+	:base(id, nome, posizione){
+		_fileporta = fileseriale;
+		_verbose = verb;
+		ImpostaPortaSeriale();
+}
+
+arduino::arduino(base myb, string fileseriale, bool verb)
+	:base(myb.getid(), myb.getnome(), myb.getposizione()){
+		_fileporta = fileseriale;
+		_verbose = verb;
+		ImpostaPortaSeriale();
+}
+
+arduino::arduino(base myb, bool verb)
+	:base(myb.getid(), myb.getnome(), myb.getposizione()){
+		_verbose = verb;
+		ImpostaPortaSeriale();
+}
+
+void arduino::ImpostaPortaSeriale(){
+	if(_fileporta.empty()) _fileporta = PORTA_DEFAULT; 
+	//char *nome = const_cast<char*>(_fileporta.c_str());
+}
+
+string arduino::LeggiRiga(){
+	string mia = "";
+	if(ApriSer(_verbose)) mia = LeggiRigaSer(_verbose);
+	ChiudiSer();
+	return mia;
+}
+
+string arduino::LeggiRispostaAS(){
+	string readMsg = "";
+	if(ApriSer(_verbose)) {
+		int to = 0;
+		// Legge un comando ArdShell dalla seriale
+		// Termina con END_MSG e lo stampa
+		while(readMsg != END_MSG && to++ < CICLI_TIME_OUT)
+			readMsg += LeggiRigaSer(_verbose);
+	}
+	ChiudiSer();
+	return readMsg;
+}
+
+void arduino::InviaMessaggioArduino(string mymsg) {
+	if(ApriSer(_verbose)) {
+		InviaMessaggioSer(mymsg, _verbose);
+		LeggiRispostaAS();
+	}
+	ChiudiSer();
+}
+
+void arduino::InviaMessaggio(char *indirizzo, int canale, char opzioni, bool verbose) {
+	string comando;
+	// Imposta il comando
+	comando += 'r';
+	// Imposta il tipo di comando
+	comando += 'o';
+	// Imposta verbose
+	if(verbose) comando += 'v';
+	else comando += '0';
+	// Inserisce l'argomento
+	comando += opzioni;
+	// Imposta il canale sul comando
+	if (canale > 13) canale = 13;
+	comando += IntToString(canale);
+	// Inserisce uno spazio
+	comando += ' ';
+	// Inserisce l'indirizzo
+	for(unsigned int i = 0; i < 22; i++)
+		comando += *(indirizzo+i);
+	// Inserisce il fine riga
+	comando += '\n';
+	InviaMessaggioArduino(comando);
+}
+
+void arduino::RicercaDispositiviOneWire(int canale) {
+	string comando = "rovs" + IntToString(canale);
+	InviaMessaggioArduino(comando);
+}
+
+void arduino::InviaMessaggio(bool operazione, char tipo, int canale, int pwm, bool verbose) {
+	string comando;
+	// Imposta il comando
+	if(operazione) comando += 'w';
+	else comando += 'r';
+	// Imposta il tipo di comando
+	comando += tipo;
+	// Imposta verbose
+	if(verbose) comando += 'v';
+	else comando += '0';
+	// Inserisce l'argomento
+	comando += '0';
+	
+	// Imposta il canale sul comando
+	if (canale > 13) canale = 13;
+	comando += IntToString(canale);
+
+	// Inserisce uno spazio
+	comando += ' ';
+	// Inserisce il pwm
+	if(pwm > 1023) pwm = 1023;
+	comando += IntToString(pwm);
+	// Inserisce il fine riga
+	comando += '\n';
+	InviaMessaggioArduino(comando);
+}
+
+void arduino::InviaMessaggio(bool operazione, char tipo, int canale, bool verbose) {
+	string comando;
+	// Imposta il comando
+	if(operazione) comando += 'w';
+	else comando += 'r';
+	// Imposta il tipo di comando
+	comando += tipo;
+	// Imposta verbose
+	if(verbose) comando += 'v';
+	else comando += '0';
+	// Inserisce l'argomento
+	comando += '0';
+	
+	// Imposta il canale sul comando
+	if (canale > 13) canale = 13;
+	comando += IntToString(canale);
+
+	// Inserisce il fine riga
+	comando += '\n';
+	InviaMessaggioArduino(comando);
+}
+
+void arduino::InviaPing()  {
+	InviaMessaggioArduino("00");
+}
+
+void arduino::InviaMessaggio(string mia)  {
+	InviaMessaggioArduino(mia);
+}

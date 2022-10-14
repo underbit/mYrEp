@@ -1,0 +1,24 @@
+#ifndef VALVOLA_H
+#define VALVOLA_H
+
+#include "arduino.h"
+
+class sonda {
+	public:
+		
+		sonda(int, char[], const arduino *, bool = true, bool = true)
+		float LeggiValore();
+		void ImpostaCelsius();
+		void ImpostaFahre();
+		void Converti();
+	private:
+		char[20] _Nome;
+		int _id;
+		arduino *_ard;
+		float _ultimaLettura;
+		byte _indirizzo[8];
+		bool _celsius;
+		bool _valoreConvertito;
+};
+
+#endif

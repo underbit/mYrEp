@@ -1,0 +1,19 @@
+#ifndef BASE_H
+#define BASE_H
+
+class base {
+
+	public:
+		// Oggetto base creato da un codice id ed un nome
+		base(byte, char[], char[]);
+		bool cambiaNome(char[]);
+		bool cambiaPosizione(char[]);
+		
+	private:
+		byte _id;
+		char[20] _nome;
+		char[40] _posizione;
+
+};
+
+#endif

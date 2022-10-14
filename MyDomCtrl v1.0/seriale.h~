@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <fcntl.h>
+#include <sys/signal.h>
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+#define BAUDRATE B9600
+#define _POSIX_SOURCE 1 				/* POSIX compliant source */
+#define FALSE 0
+#define TRUE 1
+
+int fd;
+struct termios oldtio,newtio;
+struct sigaction saio;           		/* definition of signal action */
+void signal_handler_IO (int status);   /* definition of signal handler */
+int wait_flag=TRUE;                    	/* TRUE while no signal received */
+
+const char FINE_RIGA = '\n';
+const int TIME_OUT = 10;
+
+void signal_handler_IO (int status);
+void ChiudiSer();
+void ImpostaSer();
+bool ApriSer(char *, bool);
+bool ApriSer(bool);
+string LeggiRigaSer(bool);
+void InviaMessaggioSer(string , bool);
+void InviaMessaggioSer(char *, int, bool);

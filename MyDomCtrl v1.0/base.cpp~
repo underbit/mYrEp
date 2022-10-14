@@ -1,0 +1,8 @@
+#include "base.h"
+
+base::base(byte id, char[20] name, char[40] position)
+{
+	_id = id;
+	_nome = name;
+	_posizione = potion;
+}

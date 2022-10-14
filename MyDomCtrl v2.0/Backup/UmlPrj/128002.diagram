@@ -1,0 +1,28 @@
+format 74
+
+classcanvas 128002 class_ref 128002 // arduino
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 424 41 2000
+end
+usecasecanvas 128130 usecase_ref 128002 // Legge sensori
+  xyzwh 577 20 3005 64 32 label_xy 570 52
+end
+usecasecanvas 128514 usecase_ref 128130 // Attiva/disattiva attuatori
+  xyzwh 575 93 3005 64 32 label_xy 545 125
+end
+classcanvas 128770 class_ref 128130 // MDSysCtrl
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 143 40 2000
+end
+usecasecanvas 128898 usecase_ref 128258 // Comunica
+  xyzwh 281 57 3005 64 32 label_xy 285 89
+end
+line 128386 --->
+  from ref 128002 z 3006 to ref 128130
+line 128642 --->
+  from ref 128002 z 3006 to ref 128514
+line 129026 --->
+  from ref 128770 z 3006 to ref 128898
+line 129154 --->
+  from ref 128898 z 3006 to ref 128002
+end

@@ -1,0 +1,14 @@
+#include "sensore.h"
+
+sensore::sensore (int id, string nome, string posizione, arduino &mya, int canale, bool v, bool r)
+	:base(id, nome, posizione, mya, canale, v, r) {
+
+}
+
+void sensore::LeggiDati() {
+	// Metodo virtuale
+	InviaMessaggio();
+	// Legge i dati e li mette in un buffer
+	_dati = _arduino.LeggiRispostaAS();
+}
+

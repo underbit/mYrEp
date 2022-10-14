@@ -1,0 +1,23 @@
+#ifndef ATTUATOREDIG_H
+#define ATTUATOREDIG_H
+
+#include "modulo.h"
+
+class attuatoreDig : public modulo {
+	public:
+		attuatore(int , string , string , arduino *, bool, bool);
+		void SetAttuatore(bool);
+		// Lo stato può essere: 1 aperta, 0 chiuso, -1 errore
+		bool recuperaStato() const { return _stato; };
+		// Il tipo d = attuatore digitale
+		char tipo() const { return 'd'; };
+		// Il modo può essere 0 lettura, 1 scrittura 
+		bool modo() const { return true; };
+		// Metodo polimorfo per la formazione del messaggio
+		void InviaMessaggio();
+
+	private:
+		bool _stato;
+};
+
+#endif

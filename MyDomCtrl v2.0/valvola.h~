@@ -1,0 +1,19 @@
+#ifndef VALVOLA_H
+#define VALVOLA_H
+
+#include "arduino.h"
+
+class valvola {
+	public:
+		valvola(const arduino *);
+		bool apriValvola();
+		bool chiudiValvola();
+		// Lo stato può essere: 1 aperta, 0 chiuso, -1 errore
+		byte recuperaStato();
+
+	private:
+		arduino *_ard;
+		bool _stato;
+};
+
+#endif

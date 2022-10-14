@@ -1,0 +1,55 @@
+#ifndef ARDUINO_H
+#define ARDUINO_H
+
+#include <termios.h>
+#include <fcntl.h>
+#include <sys/signal.h>
+#include <iostream>
+#include "base.h"
+
+#define BAUDRATE B9600
+#define _POSIX_SOURCE 1 				/* POSIX compliant source */
+#define FALSE 0
+#define TRUE 1
+#define PORTA_DEFAULT "/dev/ttyACM0";
+
+using namespace std;
+
+class arduino : public base {
+
+	public:
+		arduino(int , string , string , string, bool);
+		arduino(int , string , string , bool);
+		~arduino();
+		void InviaMessaggio(string, bool);
+		// true = write, false=read
+		// carattere del tipo: a o d 
+		// canale, segnale pwm
+		void InviaMessaggio(bool, char, int, int, bool);
+		// Lettura dei dati in one wire
+		void InviaMessaggio(char*, int, char, bool);
+		void RicercaDispositiviOneWire(int, bool);
+		// Invia un ping all'apparato
+		void InviaPing();
+		// La funzione carica i dati se ce ne sono: valore true		
+		string LeggiRispostaAS(bool);
+		//Recuper il file della porta seriale
+		string getFilePorta() const { return _fileporta; };
+		// Se la porta è aperta è true
+		bool getPortaValida() const { return _portaValida; };
+		
+		
+	private:
+		bool Apri();
+		void Imposta();
+		void Inizializza();
+		void Chiudi();
+		string LeggiRiga(bool);
+		// porta di connessione 
+		string _fileporta;
+		bool _portaValida;
+		// Handler del file
+		int fd;		
+		bool _verbose;
+};
+#endif
